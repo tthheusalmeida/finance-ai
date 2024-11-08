@@ -23,7 +23,7 @@ const Navbar = () => {
           className={
             pathname === "/"
               ? "font-bold text-primary"
-              : "text-muted-foreground"
+              : "font-bold text-muted-foreground"
           }
         >
           Dashboard
@@ -33,7 +33,7 @@ const Navbar = () => {
           className={
             pathname === "/transactions"
               ? "font-bold text-primary"
-              : "text-muted-foreground"
+              : "font-bold text-muted-foreground"
           }
         >
           Transações
@@ -43,7 +43,7 @@ const Navbar = () => {
           className={
             pathname === "/subscription"
               ? "font-bold text-primary"
-              : "text-muted-foreground"
+              : "font-bold text-muted-foreground"
           }
         >
           Assinaturas

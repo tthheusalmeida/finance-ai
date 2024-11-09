@@ -33,6 +33,10 @@ const getTransactionAmount = async (userId: string, where: object) => {
 
 export const getDashboard = async (month: string) => {
   const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
   const where = {
     date: {
       gte: new Date(`2024-${month}-01`),

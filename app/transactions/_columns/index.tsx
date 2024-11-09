@@ -10,6 +10,7 @@ import {
   TRANSACTION_PAYMENT_METHOD_LABELS,
 } from "@/app/_constants/transactions";
 import EditTransactionButton from "../_components/edit-transaction-button";
+import { formatCurrency } from "@/app/_utils/currency";
 
 const DateFormat = (date: Date) => {
   return new Date(date).toLocaleDateString("pt-BR", {
@@ -17,13 +18,6 @@ const DateFormat = (date: Date) => {
     month: "long",
     year: "numeric",
   });
-};
-
-const AmountFormat = (value: number) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(Number(value));
 };
 
 export const TransactionColumns: ColumnDef<Transaction>[] = [
@@ -59,7 +53,7 @@ export const TransactionColumns: ColumnDef<Transaction>[] = [
     accessorKey: "amount",
     header: "Valor",
     cell: ({ row: { original: transaction } }) =>
-      AmountFormat(Number(transaction.amount)),
+      formatCurrency(Number(transaction.amount)),
   },
   {
     accessorKey: "actions",

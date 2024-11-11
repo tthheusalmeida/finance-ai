@@ -1,4 +1,6 @@
 export const generateAiReport = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   return `Para gerar um relatório financeiro com recomendações de melhorias com base nos dados fornecidos, aqui estão algumas sugestões e observações:
 
 ### Análise Geral dos Dados

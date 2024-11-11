@@ -11,6 +11,7 @@ interface SummaryCardsProps {
   depositsTotal: number;
   investmentsTotal: number;
   expensesTotal: number;
+  userCanAddTransaction: boolean;
 }
 
 const SummaryCards = async ({
@@ -18,6 +19,7 @@ const SummaryCards = async ({
   depositsTotal,
   investmentsTotal,
   expensesTotal,
+  userCanAddTransaction,
 }: SummaryCardsProps) => {
   return (
     <div className="space-y-6">
@@ -27,6 +29,7 @@ const SummaryCards = async ({
         title="Saldo"
         amount={balance}
         size="large"
+        userCanAddTransaction={userCanAddTransaction}
       />
 
       {/* OUTROS CARDS */}
@@ -35,18 +38,21 @@ const SummaryCards = async ({
           icon={<PiggyBankIcon size={16} />}
           title="Investido"
           amount={investmentsTotal}
+          userCanAddTransaction={false}
         />
 
         <SummaryCard
           icon={<TrendingUpIcon size={16} className="text-primary" />}
           title="Receita"
           amount={depositsTotal}
+          userCanAddTransaction={false}
         />
 
         <SummaryCard
           icon={<TrendingDownIcon size={16} className="text-red-500" />}
           title="Despesas"
           amount={expensesTotal}
+          userCanAddTransaction={false}
         />
       </div>
     </div>

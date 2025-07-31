@@ -102,3 +102,70 @@ export async function deleteTransaction(id: string, userId: string) {
 
   await db.query(query, values);
 }
+
+export interface DateTransactionByTypeAmount {
+  start: Date;
+  end: Date;
+}
+
+export async function getTransactionAmountGroupedByTypeAndDate(
+  userId: string,
+  date: DateTransactionByTypeAmount,
+) {
+  const query = `
+    SELECT type, SUM(amount)
+    FROM transactions
+    WHERE user_id = $1
+      AND date >= $2
+      AND date <= $3
+    GROUP BY type;
+  `;
+
+  const values = [userId, date.start, date.end];
+
+  const { rows } = await db.query(query, values);
+
+  return rows;
+}
+
+export async function getTransactionAmountGroupedByCategory(
+  userId: string,
+  date: DateTransactionByTypeAmount,
+) {
+  const query = `
+    SELECT category, SUM(amount)
+    FROM transactions
+    WHERE user_id = $1
+      AND date >= $2
+      AND date <= $3
+    GROUP BY category;
+  `;
+
+  const values = [userId, date.start, date.end];
+
+  const { rows } = await db.query(query, values);
+
+  return rows;
+}
+
+export async function getLastTransaction(
+  userId: string,
+  date: DateTransactionByTypeAmount,
+  limit: number,
+) {
+  const query = `
+    SELECT *
+    FROM transactions
+    WHERE user_id = $1
+      AND date >= $2
+      AND date <= $3
+    ORDER BY date DESC
+    LIMIT $4;
+  `;
+
+  const values = [userId, date.start, date.end, limit];
+
+  const { rows } = await db.query(query, values);
+
+  return rows;
+}

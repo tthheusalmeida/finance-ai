@@ -3,12 +3,12 @@ import { redirect } from "next/navigation";
 import { isMatch } from "date-fns";
 import Navbar from "../_components/navbar";
 import TimeSelect from "./_components/time-select";
-// import SummaryCards from "./_components/summary-cards";
-// import TransactionsPieChart from "./_components/transactions-pie-chart";
-// import { getDashboard } from "../_data/get-dashboard";
-// import ExpensesPerCategory from "./_components/expenses-per-category";
-// import LastTransactions from "./_components/last-transactions";
-// import { canUserAddTransaction } from "../_data/can-user-add-transaction";
+import SummaryCards from "./_components/summary-cards";
+import TransactionsPieChart from "./_components/transactions-pie-chart";
+import { getDashboard } from "../_data/get-dashboard";
+import ExpensesPerCategory from "./_components/expenses-per-category";
+import LastTransactions from "./_components/last-transactions";
+import { canUserAddTransaction } from "../_data/can-user-add-transaction";
 import AiReportButton from "./_components/ai-report-button";
 
 interface HomeProps {
@@ -28,8 +28,8 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
     redirect(`?month=${new Date().getMonth() + 1}`);
   }
 
-  // const dashboard = await getDashboard(month);
-  // const userCanAddTransaction = await canUserAddTransaction();
+  const dashboard = await getDashboard(month);
+  const userCanAddTransaction = await canUserAddTransaction();
   const user = await clerkClient().users.getUser(userId);
 
   return (
@@ -48,7 +48,7 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
           </div>
         </div>
         <div className="grid grid-cols-[2fr,1fr] gap-6 overflow-hidden">
-          {/* <div className="flex flex-col gap-6 overflow-hidden">
+          <div className="flex flex-col gap-6 overflow-hidden">
             <SummaryCards
               userCanAddTransaction={userCanAddTransaction}
               {...dashboard}
@@ -60,7 +60,7 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
               />
             </div>
           </div>
-          <LastTransactions lastTransactions={dashboard.lastTransactions} /> */}
+          <LastTransactions lastTransactions={dashboard.lastTransactions} />
         </div>
       </div>
     </>

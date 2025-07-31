@@ -11,7 +11,7 @@ import {
 } from "@/app/_constants/transactions";
 import EditTransactionButton from "../_components/edit-transaction-button";
 import { formatCurrency } from "@/app/_utils/currency";
-import { removeTransaction } from "@/app/_actions/upsert-transaction";
+import { removeTransaction } from "@/app/_actions/transaction";
 
 const DateFormat = (date: Date) => {
   return new Date(date).toLocaleDateString("pt-BR", {

@@ -27,16 +27,21 @@ const MONTH_OPTIONS = [
 const TimeSelect = () => {
   const { push } = useRouter();
   const searchParams = useSearchParams();
-  const month = searchParams.get("month");
-  const handlerMonthChange = (month: string) => {
-    push(`/?month=${month}`);
+
+  const monthParam = searchParams.get("month") ?? undefined;
+
+  const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+
+  const selectedMonth = MONTH_OPTIONS.some((m) => m.value === monthParam)
+    ? monthParam
+    : currentMonth;
+
+  const handlerMonthChange = (value: string) => {
+    push(`/?month=${value}`);
   };
 
   return (
-    <Select
-      onValueChange={(value) => handlerMonthChange(value)}
-      defaultValue={month ?? ""}
-    >
+    <Select value={selectedMonth} onValueChange={handlerMonthChange}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Mês" />
       </SelectTrigger>

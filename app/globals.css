@@ -79,3 +79,7 @@ body {
     @apply h-full bg-background text-foreground;
   }
 }
+
+h2 {
+  color: white !important;
+}

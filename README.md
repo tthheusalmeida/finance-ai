@@ -32,15 +32,14 @@
 
 The project was built with the following technologies:
 
-- [Next.js](https://nextjs.org/) — React framework with hybrid rendering
 - [React](https://reactjs.org/) — UI library
+- [Next.js](https://nextjs.org/) — React framework with hybrid rendering
 - [TypeScript](https://www.typescriptlang.org/) — Typed JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS framework
-- [Node.js](https://nodejs.org/) — Backend runtime environment
 - [Clerk](https://clerk.dev/) — User authentication and session management
 - [PostgreSQL](https://www.postgresql.org/) — Relational database
-- [Drizzle ORM](https://orm.drizzle.team/) — TypeScript-first ORM
 - [Gemini AI (Google API)](https://ai.google.dev/gemini-api/docs) — AI assistant for transaction analysis and insights
+- [Zod](https://zod.dev/) — TypeScript-first schema validation
 
 <a id="environment--variables"></a>
 

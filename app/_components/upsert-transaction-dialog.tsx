@@ -37,10 +37,13 @@ import {
   TransactionType,
   TransactionCategory,
   TransactionPaymentMethod,
-} from "@prisma/client";
+} from "../_lib/database/transactions/schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { upsertTransaction } from "../_actions/upsert-transaction";
+import {
+  editTransaction,
+  insertTransaction,
+} from "../_actions/upsert-transaction";
 
 interface UpsertTransactionDialogProps {
   isOpen: boolean;
@@ -66,7 +69,7 @@ const formSchema = z.object({
   category: z.nativeEnum(TransactionCategory, {
     required_error: "A categoria é obrigatória.",
   }),
-  paymentMethod: z.nativeEnum(TransactionPaymentMethod, {
+  payment_method: z.nativeEnum(TransactionPaymentMethod, {
     required_error: "O método de pagamento é obrigatório.",
   }),
   date: z.date({
@@ -85,18 +88,22 @@ const UpsertTransactionDialog = ({
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues ?? {
-      amount: 50,
-      category: TransactionCategory.OTHER,
-      date: new Date(),
       name: "",
-      paymentMethod: TransactionPaymentMethod.CASH,
+      amount: 50,
       type: TransactionType.EXPENSE,
+      category: TransactionCategory.OTHER,
+      payment_method: TransactionPaymentMethod.CASH,
+      date: new Date(),
     },
   });
 
   const onSubmit = async (data: FormSchema) => {
     try {
-      await upsertTransaction({ ...data, id: transactionId });
+      if (isUpdate) {
+        await editTransaction({ ...data, id: transactionId });
+      } else {
+        await insertTransaction({ ...data, id: transactionId });
+      }
       setIsOpen(false);
       form.reset();
     } catch (error) {
@@ -217,7 +224,7 @@ const UpsertTransactionDialog = ({
             />
             <FormField
               control={form.control}
-              name="paymentMethod"
+              name="payment_method"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Método de pagamento</FormLabel>

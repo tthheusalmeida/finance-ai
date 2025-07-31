@@ -1,69 +1,76 @@
 "use server";
 
-// import { db } from "@/app/_lib/prisma";
+import {
+  TransactionTypeValues,
+  TransactionCategoryValues,
+  TransactionPaymentMethodValues,
+} from "@/app/_lib/database/transactions/schema";
 import { auth } from "@clerk/nextjs/server";
 import { upsertTransactionSchema } from "./schema";
 import { revalidatePath } from "next/cache";
-
-export const TransactionType = {
-  DEPOSIT: "DEPOSIT",
-  EXPENSE: "EXPENSE",
-  INVESTMENT: "INVESTMENT",
-};
-
-export const TransactionCategory = {
-  HOUSING: "HOUSING",
-  TRANSPORTATION: "TRANSPORTATION",
-  FOOD: "FOOD",
-  ENTERTAINMENT: "ENTERTAINMENT",
-  HEALTH: "HEALTH",
-  UTILITY: "UTILITY",
-  SALARY: "SALARY",
-  EDUCATION: "EDUCATION",
-  OTHER: "OTHER",
-};
-
-export const TransactionPaymentMethod = {
-  CREDIT_CARD: "CREDIT_CARD",
-  DEBIT_CARD: "DEBIT_CARD",
-  BANK_TRANSFER: "BANK_TRANSFER",
-  BANK_SLIP: "BANK_SLIP",
-  CASH: "CASH",
-  PIX: "PIX",
-  OTHER: "OTHER",
-};
-
-export type TransactionType =
-  (typeof TransactionType)[keyof typeof TransactionType];
-
-export type TransactionCategory =
-  (typeof TransactionCategory)[keyof typeof TransactionCategory];
-
-export type TransactionPaymentMethod =
-  (typeof TransactionPaymentMethod)[keyof typeof TransactionPaymentMethod];
+import {
+  updateTransaction,
+  createTransaction,
+  deleteTransaction,
+} from "@/app/_lib/database/transactions/querys";
 
 interface UpsertTransactionParams {
   id?: string; // uuid
   name: string;
   amount: number;
-  type: TransactionType;
-  category: TransactionCategory;
-  paymentMethod: TransactionPaymentMethod;
+  type: TransactionTypeValues;
+  category: TransactionCategoryValues;
+  payment_method: TransactionPaymentMethodValues;
   date: Date; //timestemp
+  createAt?: Date; //timestemp
+  updateAt?: Date; //timestemp
 }
 
-export const upsertTransaction = async (params: UpsertTransactionParams) => {
+export const editTransaction = async (params: UpsertTransactionParams) => {
   upsertTransactionSchema.parse(params);
   const { userId } = await auth();
   if (!userId) {
     throw new Error("Unauthorized");
   }
-  // await db.transaction.upsert({
-  //   update: { ...params, userId },
-  //   create: { ...params, userId },
-  //   where: {
-  //     id: params.id ?? "",
-  //   },
-  // });
+
+  const { id, ...rest } = params;
+
+  await updateTransaction(id as string, userId, {
+    name: rest.name,
+    amount: rest.amount,
+    type: rest.type,
+    category: rest.category,
+    payment_method: rest.payment_method,
+    date: rest.date,
+  });
+  revalidatePath("/transactions");
+};
+
+export const insertTransaction = async (params: UpsertTransactionParams) => {
+  upsertTransactionSchema.parse(params);
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  await createTransaction(userId, {
+    name: params.name,
+    amount: params.amount,
+    type: params.type,
+    category: params.category,
+    payment_method: params.payment_method,
+    date: params.date,
+  });
+  revalidatePath("/transactions");
+};
+
+export const removeTransaction = async (id: string) => {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  await deleteTransaction(id, userId);
+
   revalidatePath("/transactions");
 };

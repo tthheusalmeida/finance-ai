@@ -2,7 +2,7 @@ import {
   TransactionCategory,
   TransactionPaymentMethod,
   TransactionType,
-} from "./index";
+} from "../../_lib/database/transactions/schema";
 import { z } from "zod";
 
 export const upsertTransactionSchema = z.object({
@@ -10,6 +10,6 @@ export const upsertTransactionSchema = z.object({
   amount: z.number().positive(),
   type: z.nativeEnum(TransactionType),
   category: z.nativeEnum(TransactionCategory),
-  paymentMethod: z.nativeEnum(TransactionPaymentMethod),
+  payment_method: z.nativeEnum(TransactionPaymentMethod),
   date: z.date(),
 });

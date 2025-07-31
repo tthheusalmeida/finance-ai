@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/transactions/_components/type-bagde"
+    "app/transactions/_components/type-bagde",
+    "app/_lib/database/transactions"
   ],
   "exclude": ["node_modules"]
 }

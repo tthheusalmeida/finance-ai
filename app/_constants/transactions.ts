@@ -1,10 +1,10 @@
 import {
+  TransactionType,
   TransactionCategory,
   TransactionPaymentMethod,
-  TransactionType,
-} from "@prisma/client";
+} from "../_lib/database/transactions/schema";
 
-export const TRANSACTION_PAYMENT_METHOD_ICONS = {
+export const TRANSACTION_PAYMENT_METHOD_ICONS: Record<string, string> = {
   [TransactionPaymentMethod.CREDIT_CARD]: "credit-card.svg",
   [TransactionPaymentMethod.DEBIT_CARD]: "debit-card.svg",
   [TransactionPaymentMethod.BANK_TRANSFER]: "bank-transfer.svg",
@@ -14,7 +14,7 @@ export const TRANSACTION_PAYMENT_METHOD_ICONS = {
   [TransactionPaymentMethod.OTHER]: "other.svg",
 };
 
-export const TRANSACTION_CATEGORY_LABELS = {
+export const TRANSACTION_CATEGORY_LABELS: Record<string, string> = {
   EDUCATION: "Educação",
   ENTERTAINMENT: "Entretenimento",
   FOOD: "Alimentação",
@@ -26,7 +26,7 @@ export const TRANSACTION_CATEGORY_LABELS = {
   UTILITY: "Utilidades",
 };
 
-export const TRANSACTION_PAYMENT_METHOD_LABELS = {
+export const TRANSACTION_PAYMENT_METHOD_LABELS: Record<string, string> = {
   BANK_TRANSFER: "Transferência Bancária",
   BANK_SLIP: "Boleto Bancário",
   CASH: "Dinheiro",

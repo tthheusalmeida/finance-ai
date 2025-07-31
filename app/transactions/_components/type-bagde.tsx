@@ -1,4 +1,7 @@
-import { Transaction, TransactionType } from "@prisma/client";
+import {
+  Transaction,
+  TransactionType,
+} from "../../_lib/database/transactions/schema";
 import { Badge } from "@/app/_components/ui/badge";
 import { Circle } from "lucide-react";
 

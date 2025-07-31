@@ -1,6 +1,6 @@
 "use client";
 
-import { Transaction } from "@prisma/client";
+import { Transaction } from "../../_lib/database/transactions/schema";
 import { ColumnDef } from "@tanstack/react-table";
 import TransactionTypeBadge from "../_components/type-bagde";
 import { Button } from "@/app/_components/ui/button";
@@ -11,6 +11,7 @@ import {
 } from "@/app/_constants/transactions";
 import EditTransactionButton from "../_components/edit-transaction-button";
 import { formatCurrency } from "@/app/_utils/currency";
+import { removeTransaction } from "@/app/_actions/upsert-transaction";
 
 const DateFormat = (date: Date) => {
   return new Date(date).toLocaleDateString("pt-BR", {
@@ -18,6 +19,10 @@ const DateFormat = (date: Date) => {
     month: "long",
     year: "numeric",
   });
+};
+
+const onClickDelete = async (id: string) => {
+  await removeTransaction(id);
 };
 
 export const TransactionColumns: ColumnDef<Transaction>[] = [
@@ -42,7 +47,7 @@ export const TransactionColumns: ColumnDef<Transaction>[] = [
     accessorKey: "paymentMethod",
     header: "Método de Pagamento",
     cell: ({ row: { original: transaction } }) =>
-      TRANSACTION_PAYMENT_METHOD_LABELS[transaction.paymentMethod],
+      TRANSACTION_PAYMENT_METHOD_LABELS[transaction.payment_method],
   },
   {
     accessorKey: "date",
@@ -62,7 +67,12 @@ export const TransactionColumns: ColumnDef<Transaction>[] = [
       return (
         <div className="space-x-1">
           <EditTransactionButton transaction={transaction} />
-          <Button variant="ghost" size="icon" className="text-muted-foreground">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-muted-foreground"
+            onClick={() => onClickDelete(transaction.id)}
+          >
             <TrashIcon />
           </Button>
         </div>
